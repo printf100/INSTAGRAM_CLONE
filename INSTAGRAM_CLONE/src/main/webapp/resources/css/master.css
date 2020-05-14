@@ -1,0 +1,51 @@
+/* html tags */
+*{
+	margin: 0px;
+	padding: 0px;
+}
+body{background-color: #f8f9fa!important;}
+/* div{border: 1px dotted blue;} */
+a:link{text-decoration: none; color:black;}
+a:visited{text-decoration: none; color:black;}
+a:active{text-decoration: none; color:black;}
+a:hover{text-decoration: none; color:black;}
+
+
+/* semantic tags */
+section{min-height: 100vh; margin-top: 30px;}
+article{min-height: 80%;}
+
+
+/* bootStrap tags / class */
+i{cursor: pointer;}
+
+.cursor-pointer{cursor:pointer;}
+.hover-bg-gray:hover{background-color: gray;}
+
+.overflow-scroll{overflow: scroll;}
+.overflow-hidden{overflow: hidden;}
+.vertical-align-baseline{vertical-align: baseline;}
+
+.w-150{width: 150px;}
+.h-150{height: 150px;}
+.w-80{width: 80px;}
+.h-80{height: 80px;}
+.w-60{width: 60px;}
+.h-60{height: 60px;}
+.w-40{width: 40px;}
+.h-40{height: 40px;}
+.w-26{width: 26px;}
+.h-26{height: 26px;}
+.w-700{width: 700px;}
+.h-700{height: 700px;}
+
+.wp-90{width: 90%;}
+.hp-90{height: 90%;}
+.wp-10{width: 10%;}
+.hp-10{height: 10%;}
+
+.min-w-500{min-width: 500px;}
+.min-h-500{min-height: 500px;}
+
+.bg-white{background-color: white;}
+

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.11.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+				
+	<!-- db.properties -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:mybatis/db.properties</value>
+				<!-- classpath = src/main/resources 를 잡아준다. -->
+			</list>
+		</property>
+		<property name="fileEncoding" value="UTF-8"></property>
+	</bean>
+	
+	<!-- dataSource -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${driver}"/>
+		<property name="url" value="${url}"/>
+		<property name="username" value="${username}"/>
+		<property name="password" value="${password}"/>
+	</bean>
+	
+	<!-- mybatis -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="WEB-INF/spring/sqls/config.xml"/>
+	</bean>
+	
+	<!-- sqlSessoinTemplate -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSession"/>
+	</bean>
+	
+	<!-- transaction -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<!-- JPA repository Interface Scanning -->
+	<jpa:repositories base-package="com.instagram.clone.ssohandler" transaction-manager-ref="jpaTransactionManager" />
+
+	<context:component-scan base-package="com.instagram.clone.ssohandler">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+	</context:component-scan>
+
+
+	<bean class="org.springframework.orm.jpa.JpaTransactionManager" id="jpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<!-- JPA 설정 ( 엔티티 매니저 팩토리 등록 ) -->
+	<bean id="entityManagerFactory"	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- @Entity 탐색 범위 -->
+		<property name="packagesToScan" value="com.instagram.clone.ssohandler" />
+
+		<!-- 하이버네이트 구현체 사용 -->
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+	</bean>
+</beans>

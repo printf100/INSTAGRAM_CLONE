@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="member">
+   
+   <select id="login" parameterType="MemberVo" resultType="MemberVo">
+      select * 
+      from MEMBER
+      where MEMBER_EMAIL = #{member_email} AND MEMBER_PASSWORD = #{member_password}
+   </select>
+   
+   <select id="snsLogin" parameterType="MemberVo" resultType="MemberVo">
+      select * 
+      from MEMBER
+      where SNS_TYPE = #{sns_type} AND SNS_ID = #{sns_id} AND MEMBER_EMAIL = #{member_email}
+   </select>
+   
+   <select id="selectMemberProfile" parameterType="int" resultType="MemberProfileVo">
+      select * 
+      from MEMBER_PROFILE
+      where MEMBER_CODE = #{member_code}
+   </select>
+   
+   <select id="emailCheck" parameterType="MemberVo" resultType="int">
+      select count(*)
+      from MEMBER
+      where MEMBER_EMAIL = #{member_email}
+   </select>
+   
+   <select id="idCheck" parameterType="MemberVo" resultType="int">
+      select count(*) 
+      from MEMBER
+      where MEMBER_ID = #{member_id}
+   </select>
+   
+   <insert id="join" parameterType="MemberVo">
+      insert into MEMBER 
+      VALUES(MEMBER_CODE_SEQ.NEXTVAL,#{member_email},'',
+            #{member_name},#{member_id},#{member_password},'','','')
+   </insert>
+   
+   <insert id="insertProfile" parameterType="MemberProfileVo">
+      insert into MEMBER_PROFILE (MEMBER_CODE) 
+      VALUES(#{member_code})
+   </insert>
+   
+   <insert id="createChannel" parameterType="MemberVo">
+      insert into CHANNEL VALUES(CHANNEL_CODE_SEQ.NEXTVAL, #{member_code}, 'P', '', '', '', '', '', 'N', '' )
+   </insert>
+   
+   <update id="updateMemberProfileImage" parameterType="MemberProfileVo">
+      UPDATE MEMBER_PROFILE
+      SET MEMBER_IMG_ORIGINAL_NAME =#{member_img_original_name},
+      MEMBER_IMG_SERVER_NAME =#{member_img_server_name},
+      MEMBER_IMG_PATH =#{member_img_path}
+      WHERE MEMBER_CODE =#{member_code}
+   </update>
+   
+   <update id="updateMemberProfile" parameterType="MemberProfileVo">
+   	  UPDATE MEMBER_PROFILE
+   	  SET MEMBER_WEBSITE =#{member_website},
+   	  MEMBER_INTRODUCE =#{member_introduce},
+   	  MEMBER_GENDER =#{member_gender}
+   	  WHERE MEMBER_CODE =#{member_code}
+   </update>
+   
+   <update id="updateMember" parameterType="MemberVo">
+   	  UPDATE MEMBER
+   	  SET MEMBER_NAME =#{member_name},
+   	  MEMBER_EMAIL =#{member_email}
+   	  WHERE MEMBER_CODE =#{member_code}
+   </update>
+   <select id="nameSearchAutoComplete" parameterType="map" resultType="MemberJoinProfileVo">
+      select * 
+      from MEMBER m, MEMBER_PROFILE mp
+      where m.member_code = mp.member_code
+      and m.member_id like '%${id_name}%' 
+      and m.member_name like '%${id_name}%'
+      and m.member_code != #{my_member_code}
+   </select>
+   
+   <select id="selectMemberList" parameterType="map" resultType="MemberJoinProfileSimpleVo">
+      select *
+      from MEMBER m, MEMBER_PROFILE mp
+      where m.member_code = mp.member_code
+      
+      <choose>
+            <when test="codeList.size != 0">
+                and m.member_code 
+                <foreach collection="codeList" item="item" index="index" separator="," open="in (" close=")">
+                    #{item}
+                </foreach>
+            </when>
+        </choose>
+   </select>
+</mapper>

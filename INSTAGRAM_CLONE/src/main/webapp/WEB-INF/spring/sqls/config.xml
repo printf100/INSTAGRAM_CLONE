@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="com.instagram.clone.model.vo.MemberVo" alias="MemberVo"/>
+		<typeAlias type="com.instagram.clone.model.vo.MemberProfileVo" alias="MemberProfileVo"/>
+		<typeAlias type="com.instagram.clone.model.vo.MemberJoinProfileVo" alias="MemberJoinProfileVo"/>
+		<typeAlias type="com.instagram.clone.model.vo.MemberJoinProfileSimpleVo" alias="MemberJoinProfileSimpleVo"/>
+		<typeAlias type="com.instagram.clone.model.vo.FeedVo" alias="FeedVo"/>
+		<typeAlias type="com.instagram.clone.model.vo.BoardVo" alias="BoardVo"/>
+	</typeAliases>
+
+
+	<mappers>
+		<mapper resource="/mybatis/instagram-member-mapper.xml" />
+		<mapper resource="/mybatis/instagram-board-mapper.xml" />
+	</mappers>
+	<!-- resource = src/main/resources -->
+</configuration>
